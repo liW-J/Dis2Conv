@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/具体实现/CMeKG词库（爬取于CMeKG中文医学知识图谱）-质量最佳/检查诊疗技术.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/具体实现/CMeKG词库（爬取于CMeKG中文医学知识图谱）-质量最佳/疾病.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/具体实现/CMeKG词库（爬取于CMeKG中文医学知识图谱）-质量最佳/症状.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/具体实现/CMeKG词库（爬取于CMeKG中文医学知识图谱）-质量最佳/药物.txt" charset="GBK" />
+  </component>
+</project>
