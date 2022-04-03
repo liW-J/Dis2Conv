@@ -4,6 +4,7 @@ import re
 import time
 import json
 import jionlp as jio
+import random
 
 
 path_list = []
@@ -92,7 +93,9 @@ def kind_question(kind,file,row):
                             name = i.replace(":", "")
                             name = name.replace("否认", "")
                             # 否认词
-                            txt = "./模板./3既往史./1.txt"
+                            txt = "./模板./2现病史./7."
+                            RAN = random.randint(1, 4)
+                            txt = txt + str(RAN) + ".txt"
                             with open(txt, 'r', encoding='UTF-8') as fff:
                                 talk = fff.readlines()
                                 for x in talk:
@@ -111,7 +114,9 @@ def kind_question(kind,file,row):
                     #对肯定疾病、症状提问
                     if records["疾病"] != []:
                         # print(records)
-                        txt = "./模板./2现病史./5.txt"
+                        txt = "./模板./2现病史./5."
+                        RAN = random.randint(1, 2)
+                        txt = txt + str(RAN) + ".txt"
                         write_ks(txt, ff, "疾病", records)
                         # 否认的症状
                     if records["症状"] != []:
@@ -168,11 +173,15 @@ def kind_question(kind,file,row):
                     # 否认的疾病
                     if NOTrecords["疾病"] != []:
                         # print(records)
-                        txt = "./模板./2现病史./1.txt"
+                        txt = "./模板./2现病史./1."
+                        RAN = random.randint(1, 2)
+                        txt = txt + str(RAN) + ".txt"
                         write_ks(txt, ff, "疾病", NOTrecords)
                     # 否认的症状
                     if NOTrecords["症状"] != []:
-                        txt = "./模板./2现病史./2.txt"
+                        txt = "./模板./2现病史./2."
+                        RAN = random.randint(1, 2)
+                        txt = txt + str(RAN) + ".txt"
                         write_ks(txt, ff, "症状", NOTrecords)
                     #排便情况
                     if BB !="":
@@ -207,7 +216,9 @@ def kind_question(kind,file,row):
                         name = i.replace(":","")
                         name = name.replace("否认", "")
                         #否认词
-                        txt = "./模板./3既往史./1.txt"
+                        txt = "./模板./3既往史./1."
+                        RAN = random.randint(1, 4)
+                        txt = txt + str(RAN) + ".txt"
                         with open(txt, 'r', encoding='UTF-8') as fff:
                             talk = fff.readlines()
                             for x in talk:
@@ -226,7 +237,9 @@ def kind_question(kind,file,row):
                 write_ks(txt, ff, "疾病", records)
             #曾吃过什么药物
             if records["药物"]!=[]:
-                txt = "./模板./3既往史./3.txt"
+                txt = "./模板./3既往史./3."
+                RAN = random.randint(1, 2)
+                txt = txt + str(RAN) + ".txt"
                 write_ks(txt, ff, "药物", records)
 
             # 曾有什么症状
@@ -240,7 +253,9 @@ def kind_question(kind,file,row):
                 if "否认" in i:
                     name = i.replace(":", "")
                     name = name.replace("否认", "")
-                    txt = "./模板./4个人史./1.txt"
+                    txt = "./模板./4个人史./1."
+                    RAN = random.randint(1, 4)
+                    txt = txt + str(RAN) + ".txt"
                     with open(txt, 'r', encoding='UTF-8') as fff:
                         talk = fff.readlines()
                         for x in talk:
@@ -352,7 +367,9 @@ def kind_question(kind,file,row):
                     name = i.replace(":", "")
                     name = name.replace("家族史", "")
                     name = name.replace("否认", "")
-                    txt = "./模板./6家族史./1.txt"
+                    txt = "./模板./6家族史./1."
+                    RAN = random.randint(1, 4)
+                    txt = txt + str(RAN) + ".txt"
                     with open(txt, 'r', encoding='UTF-8') as fff:
                         talk = fff.readlines()
                         for x in talk:
@@ -384,7 +401,8 @@ def kind_question(kind,file,row):
             #检查结果
             newrow = re.split('[。；]', row)
             part=["皮肤粘膜","淋巴结","头颅","眼","耳","鼻","口"]
-            txt = "./模板./7体格检查./2.txt"
+
+
             for i in newrow:
                 for j in part:
                     KEY=j+":"
@@ -393,6 +411,9 @@ def kind_question(kind,file,row):
                         if "头部及其器官:" in i:
                             i=i.replace("头部及其器官:","")
                         i=i.replace(KEY,"")
+                        RAN = random.randint(1, 3)
+                        txt = "./模板./7体格检查./2."
+                        txt = txt + str(RAN) + ".txt"
                         with open(txt, 'r', encoding='UTF-8') as fff:
                             talk = fff.readlines()
                             for x in talk:

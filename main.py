@@ -144,24 +144,7 @@ if __name__ =='__main__':
 
     with open("sentence.txt","r",encoding='utf8',newline='') as f:
         for line in f:
-            # marriage = []
-            # family = []
-            # marriageWord = word("./具体实现/电子病历触发词词典/婚育史.txt")
-            # familyWord = word("./具体实现/电子病历触发词词典/家族史.txt")
-            # print(familyWord)
-            # marriage = tigger2(line, marriageWord, marriage)
-            # family = tigger1(line, familyWord, family)
-            # print(marriage)
-            # tiggerList = ["婚育史", "家族史"]
-            # for kind in tiggerList:
-            #     file = str(kind) + ".txt"
-            #     if kind == "婚育史":
-            #         records = marriage
-            #     else:
-            #         records = family
-            #     with open(file, "a", encoding='utf8', newline='') as ff:
-            #         ff.write(str(records))
-            #         ff.write("\n")
+
             sentence=line.split(",")
             kinds = ["主诉", "现病史", "既往史", "辅助检查", "初步诊断"]
             for i in sentence:
