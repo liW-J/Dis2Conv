@@ -5,6 +5,7 @@ import time
 import json
 import jionlp as jio
 import random
+import cmekg
 
 
 path_list = []
@@ -174,7 +175,7 @@ def kind_question(kind,file,row):
                     if NOTrecords["疾病"] != []:
                         # print(records)
                         txt = "./模板./2现病史./1."
-                        RAN = random.randint(1, 2)
+                        RAN = random.randint(1, 3)
                         txt = txt + str(RAN) + ".txt"
                         write_ks(txt, ff, "疾病", NOTrecords)
                     # 否认的症状
@@ -217,7 +218,7 @@ def kind_question(kind,file,row):
                         name = name.replace("否认", "")
                         #否认词
                         txt = "./模板./3既往史./1."
-                        RAN = random.randint(1, 4)
+                        RAN = random.randint(1, 5)
                         txt = txt + str(RAN) + ".txt"
                         with open(txt, 'r', encoding='UTF-8') as fff:
                             talk = fff.readlines()
@@ -396,22 +397,28 @@ def kind_question(kind,file,row):
                 ffile.write(str(records))
                 ffile.write("\n")
             if records["检查"] != []:
-                txt = "./模板./7体格检查./1.txt"
+                txt = "./模板./7体格检查./1."
+                RAN = random.randint(1, 3)
+                txt = txt + str(RAN) + ".txt"
                 write_ks(txt, ff, "检查", records)
             #检查结果
             newrow = re.split('[。；]', row)
             part=["皮肤粘膜","淋巴结","头颅","眼","耳","鼻","口"]
 
-
+            remberRan = {1:0,2:0,3:0,4:0}
             for i in newrow:
                 for j in part:
                     KEY=j+":"
                     if KEY in i:
-                        print(i)
+                        # print(i)
                         if "头部及其器官:" in i:
                             i=i.replace("头部及其器官:","")
                         i=i.replace(KEY,"")
-                        RAN = random.randint(1, 3)
+                        RAN = random.randint(1, 4)
+                        while( RAN==4 and remberRan[4]>1) or remberRan[RAN]>2 :
+                            RAN = random.randint(1, 4)
+                        remberRan[RAN]+=1
+
                         txt = "./模板./7体格检查./2."
                         txt = txt + str(RAN) + ".txt"
                         with open(txt, 'r', encoding='UTF-8') as fff:
@@ -427,7 +434,7 @@ def kind_question(kind,file,row):
                     ff.write(x)
 
         if kind=="辅助检查":
-            print(row)
+            # print(row)
             #检查项目
             disease = []
             symptom = []
@@ -450,10 +457,12 @@ def kind_question(kind,file,row):
 
             if records["疾病"] != []:
                 # print(records)
-                txt = "./模板./8辅助检查./2.txt"
+                txt = "./模板./8辅助检查./2."
+                RAN = random.randint(1, 2)
+                txt = txt + str(RAN) + ".txt"
                 write_ks(txt, ff, "疾病", records)
         if kind=="初步诊断":
-            print(row)
+            # print(row)
             row=row.replace("五、初步诊断:","")
             txt = "./模板./9初步诊断./1.txt"
             with open(txt, 'r', encoding='UTF-8') as fff:
@@ -461,8 +470,63 @@ def kind_question(kind,file,row):
                 for x in talk:
                     x = x.replace("______", row, 1)
                     ff.write(x)
+            disease = []
+            symptom = []
+            expriement = []
+            medical = []
+
+            cemkg("./具体实现/CMeKG词库（爬取于CMeKG中文医学知识图谱）-质量最佳/疾病.txt", disease)
+            cemkg("./具体实现/CMeKG词库（爬取于CMeKG中文医学知识图谱）-质量最佳/症状.txt", symptom)
+            cemkg("./具体实现/CMeKG词库（爬取于CMeKG中文医学知识图谱）-质量最佳/药物.txt", medical)
+            cemkg("./具体实现/CMeKG词库（爬取于CMeKG中文医学知识图谱）-质量最佳/检查诊疗技术.txt", expriement)
+            ffile = str(kind) + ".txt"
+            records = {"疾病": [], "症状": [], "药物": [], "检查": []}
+            with open(ffile, "a", encoding='utf8', newline='') as ffile:
+                records = Records(row, records, disease, symptom, expriement, medical)
+                ffile.write(str(records))
+                ffile.write("\n")
+            if records["疾病"]!=[]:
+                dis = records["疾病"][0]
+                RE = cmekg.getProperties(dis, "病因")
+                TR = cmekg.getProperties(dis,'治疗方案')
+                if RE!= []:
+                    print(RE)
+
+
+            if RE!=[]:
+                # print(records)
+                key = ''
+                txt = "./模板./9初步诊断./2.txt"
+                with open(txt, 'r', encoding='UTF-8') as fff:
+                    talk = fff.readlines()
+                    for j in RE:
+                        if j == RE[-1]:
+                            key += j
+                        else:
+                            key += j + "、"
+
+                    for x in talk:
+                        x = x.replace("______", key, 1)
+                        ff.write(x)
+            if TR!=[]:
+
+                key = ''
+                txt = "./模板./9初步诊断./3.txt"
+                with open(txt, 'r', encoding='UTF-8') as fff:
+                    talk = fff.readlines()
+                    for j in TR:
+                        if j == TR[-1]:
+                            key += j
+                        else:
+                            key += j + "、"
+
+                    for x in talk:
+                        x = x.replace("______", key, 1)
+                        ff.write(x)
+
+
         if kind=="补充诊断":
-            print(row)
+            # print(row)
             index = row.find("补充诊断:",1)
             row = row[ index +5:]
             txt = "./模板./10补充诊断./1.txt"
